@@ -35,7 +35,6 @@ const cart = [];
 
 // Function to render the cart (for demonstration purposes)
 function renderCart() {
-  console.log("Cart:", cart);
 }
 
 // Function to find a product by SKU and return it
