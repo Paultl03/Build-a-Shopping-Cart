@@ -25,14 +25,34 @@ const strawberry = {
 // Array to store the products
 const products = [cherry, orange, strawberry];
 
-console.log(products); // Output the array of products
+// Function to find a product by SKU
+function findProductBySKU(sku) {
+  return products.find(item => item.productId === sku);
+}
 
-// Function to add a product to the cart 
-function addProductToCart(sku) {
-  const product = products.find(item => item.productId === sku);
+// Sample cart array to hold the cart items
+const cart = [];
 
+// Function to render the cart (for demonstration purposes)
+function renderCart() {
+  console.log("Cart:", cart);
+}
+
+// Function to find a product by SKU and return it
+function getProductBySKU(sku) {
+  const product = findProductBySKU(sku);
   if (!product) {
     console.error("Product not found.");
+    return null;
+  }
+  return product;
+}
+
+// Function to add a product to the cart
+function addProductToCart(sku) {
+  const product = getProductBySKU(sku);
+
+  if (!product) {
     return;
   }
 
@@ -49,6 +69,12 @@ function addProductToCart(sku) {
 
 // Function to increase the quantity of a product in the cart
 function increaseQuantity(sku) {
+  const product = getProductBySKU(sku);
+
+  if (!product) {
+    return;
+  }
+
   const cartItem = cart.find(item => item.productId === sku);
 
   if (cartItem) {
@@ -59,6 +85,12 @@ function increaseQuantity(sku) {
 
 // Function to decrease the quantity of a product in the cart
 function decreaseQuantity(sku) {
+  const product = getProductBySKU(sku);
+
+  if (!product) {
+    return;
+  }
+
   const cartItemIndex = cart.findIndex(item => item.productId === sku);
 
   if (cartItemIndex !== -1) {
@@ -74,6 +106,12 @@ function decreaseQuantity(sku) {
 
 // Function to remove a product from the cart
 function removeProductFromCart(sku) {
+  const product = getProductBySKU(sku);
+
+  if (!product) {
+    return;
+  }
+
   const cartItemIndex = cart.findIndex(item => item.productId === sku);
 
   if (cartItemIndex !== -1) {
@@ -82,23 +120,7 @@ function removeProductFromCart(sku) {
   }
 }
 
-// Sample cart array to hold the cart items
-const cart = [];
-
-// Function to render the cart (for demonstration purposes)
-function renderCart() {
-  console.log("Cart:", cart);
-}
-
-// Test the functions
-addProductToCart(1); // Adding cherry to cart
-addProductToCart(2); // Adding orange to cart
-increaseQuantity(1); // Increasing quantity of cherry
-decreaseQuantity(1); // Decreasing quantity of cherry
-decreaseQuantity(1); // Removing cherry from cart
-removeProductFromCart(2); // Removing orange from cart
-
-// Global variable to hold the total amount paid 
+// Global variable to hold the total amount paid
 let totalPaid = 0;
 
 // Function to calculate the total cost of the items in the cart
@@ -124,30 +146,12 @@ function pay(amountReceived) {
   }
 }
 
-// Example usage
-console.log("Grand Total:", cartTotal());
-console.log("Change Due:", pay(20)); // Assuming the customer paid $20
+// Test the functions
+addProductToCart(1); // Adding cherry to cart
+addProductToCart(2); // Adding orange to cart
+increaseQuantity(1); // Increasing quantity of cherry
+decreaseQuantity(1); // Decreasing quantity of cherry
+decreaseQuantity(1); // Removing cherry from cart
+removeProductFromCart(2); // Removing orange from cart
 
 
-/* Place stand out suggestions here (stand out suggestions can be found at the bottom of the project rubric.)*/
-
-
-/* The following is for running unit tests. 
-   To fully complete this project, it is expected that all tests pass.
-   Run the following command in terminal to run tests
-   npm run test
-*/
-
-module.exports = {
-   products,
-   cart,
-   addProductToCart,
-   increaseQuantity,
-   decreaseQuantity,
-   removeProductFromCart,
-   cartTotal,
-   pay, 
-   emptyCart,
-   /* Uncomment the following line if completing the currency converter bonus */
-   // currency
-}
